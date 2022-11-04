@@ -127,9 +127,14 @@ module ActiveDynamic
     def save_dynamic_attributes
       dynamic_attributes.each do |field|
         next unless _custom_fields[field.name]
-        attr = active_dynamic_attributes.find_or_create_by(field.as_json)
-        attr.assign_attributes(value: _custom_fields[field.name])
-        attr.save
+        puts '############## Field #############'
+        puts field.inspect
+        attr = active_dynamic_attributes.first_or_initialize(name: field.name)
+        puts '############## attr #############'
+        puts attr.inspect
+        attr.update(id: attr.id, value: field.name, display_name: field.display_name, datatype: field.datatype, required: field.required)
+        puts '############## Attr updated ##############'
+        puts attr.inspect
       end
     end
 
